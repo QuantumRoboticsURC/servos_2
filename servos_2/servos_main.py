@@ -10,6 +10,7 @@ class servos_main(Node):
         super().__init__('servos_main')
         print("Enter main")
         self.kit = ServoKit(channels=16)
+
         self.servo_camArm = 7
         self.servo_camAntena = 4
         self.servo_rotacion = 3
@@ -29,6 +30,7 @@ class servos_main(Node):
         self.subscriber_servo_gripper = self.create_subscription(Int32,"/arm_teleop/servo_gripper", self.callback3,10)
         self.subscriber_servo_gripper
     def limits(self,data, liminf,limsup):
+
         if data<liminf:
             data=liminf
         elif data>limsup:
@@ -37,21 +39,23 @@ class servos_main(Node):
     def callback(self,data):
         try:
             ndata=self.limits(data.data,0,180)
-            self.kit.servo[self.servo_camArm].angle = int(ndata)        
+            self.kit.servo[self.servo_brazo1].angle = int(ndata)        
         except Exception as e:
             print(data.data)
             print(e)
     def callback2(self,data):
         try:
             ndata=self.limits(data.data,0,180)
-            self.kit.servo[self.servo_camAntena].angle = int(ndata)        
+            self.kit.servo[self.servo_garra1].angle = int(ndata)        
         except Exception as e:
             print(data.data)
             print(e)
     def callback3(self,data):
         try:
+
             ndata=self.limits(data.data,0,300)
             self.kit.servo[self.servo_rotacion].angle = int(ndata)        
+
         except Exception as e:
             print(data.data)
             print(e)
